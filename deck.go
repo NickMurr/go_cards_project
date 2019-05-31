@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"strings"
 )
@@ -14,6 +15,7 @@ which is a slice if strings
 
 type deck []string
 
+// Create a Deck
 func newDeck() deck {
 	cards := deck{}
 
@@ -29,16 +31,19 @@ func newDeck() deck {
 	return cards
 }
 
+// Print all Cards
 func (d deck) print() {
 	for i, card := range d {
 		fmt.Println(i, "-", card)
 	}
 }
 
+// Deal cards to Hand
 func deal(d deck, handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:]
 }
 
+// Converting deck to String
 func (d deck) toString() string {
 	return strings.Join([]string(d), ",")
 }
@@ -59,4 +64,13 @@ func newDeckFromFile(filename string) deck {
 
 	outStringSlice := strings.Split(string(bs), ",")
 	return deck(outStringSlice)
+}
+
+// Shuffle cards
+func (d deck) shuffle() {
+	for i := range d {
+		newPosition := rand.Intn(len(d) - 1)
+
+		d[i], d[newPosition] = d[newPosition], d[i]
+	}
 }
